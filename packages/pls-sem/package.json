@@ -1,0 +1,62 @@
+{
+  "name": "@analyx-sdk/pls-sem",
+  "version": "2026.0.1-alpha",
+  "description": "PLS-SEM engine for Analyx",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./model": {
+      "types": "./dist/model/index.d.ts",
+      "import": "./dist/model/index.mjs",
+      "require": "./dist/model/index.cjs"
+    },
+    "./algorithm": {
+      "types": "./dist/algorithm/index.d.ts",
+      "import": "./dist/algorithm/index.mjs",
+      "require": "./dist/algorithm/index.cjs"
+    },
+    "./measurement": {
+      "types": "./dist/measurement/index.d.ts",
+      "import": "./dist/measurement/index.mjs",
+      "require": "./dist/measurement/index.cjs"
+    },
+    "./structural": {
+      "types": "./dist/structural/index.d.ts",
+      "import": "./dist/structural/index.mjs",
+      "require": "./dist/structural/index.cjs"
+    },
+    "./inference": {
+      "types": "./dist/inference/index.d.ts",
+      "import": "./dist/inference/index.mjs",
+      "require": "./dist/inference/index.cjs"
+    },
+    "./report": {
+      "types": "./dist/report/index.d.ts",
+      "import": "./dist/report/index.mjs",
+      "require": "./dist/report/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@analyx-sdk/math": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "vitest": "^2.1.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "sideEffects": false
+}

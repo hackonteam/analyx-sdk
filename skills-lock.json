@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "skills": {
+    "vc:agent-browser": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-agent-browser/SKILL.md",
+      "computedHash": "47fa3c7e06c60028c660f23de869ce662d7d41b95f8d9a89c377c4316d68ff36"
+    },
+    "vc:audit-context": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-audit-context/SKILL.md",
+      "computedHash": "decde9e87645fec159853474c46ccb4ce3be06633d755802d33411d8d51e0513"
+    },
+    "vc:audit-plans": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-audit-plans/SKILL.md",
+      "computedHash": "0e24d1c31b63e8ea866286cb17533d7d3310301b9692eb0be5c78a778d9e510e"
+    },
+    "vc:audit-vc": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-audit-vc/SKILL.md",
+      "computedHash": "07db5cc480df7ec7874713510ff53bd650702ecaba38e489a4ecd713f42f80a2"
+    },
+    "vc:autoresearch": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-autoresearch/SKILL.md",
+      "computedHash": "90f4ecbaf89a44e277b06abd099358f954da32cb17e6eac399f5acdb6ac7bcb4"
+    },
+    "vc:chrome-devtools": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-chrome-devtools/SKILL.md",
+      "computedHash": "3b80db31a0a19e975f0c9e1e5270c4f7544d6851817cefa0cc1acf3eff94e712"
+    },
+    "vc:context-engineering": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-context-engineering/SKILL.md",
+      "computedHash": "f94736891ab39d3650963db4258bc3688570cf05e99b3d0fe73da8ba1b66c095"
+    },
+    "vc:debug": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-debug/SKILL.md",
+      "computedHash": "acfc0ae4e745396250232d7989098ec182cbf6f6801ce7a92a71801236959d93"
+    },
+    "vc:docs": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-docs/SKILL.md",
+      "computedHash": "2d8be42cbc6593e6b6508816cc0a14330b45a8d7257676eef4b5017e14e297ea"
+    },
+    "vc:docs-seeker": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-docs-seeker/SKILL.md",
+      "computedHash": "3fc614392b2faa213199fb830a4137744933c0a9856bdc2b786dd4dca30ed13f"
+    },
+    "vc:frontend-design": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-frontend-design/SKILL.md",
+      "computedHash": "60dcd1a00469ce304bd13dd28599c8ebc080fbef4ba2b37b649ecefcc0dbed01"
+    },
+    "vc:generate-context": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-generate-context/SKILL.md",
+      "computedHash": "aff766c3fd7b8607f9d8a5f69304f11e0f7b7890a179abf58c2ad293aa2fe77c"
+    },
+    "vc:generate-plan": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-generate-plan/SKILL.md",
+      "computedHash": "bfc8f911148a6e28475965847149cb46ad037c670d256829d2435fe9fb5dd965"
+    },
+    "vc:mcp-management": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-mcp-management/SKILL.md",
+      "computedHash": "fc6fa96320e47140f221c63b2259177a32f7e46dc6d2624352ff428eca12a76f"
+    },
+    "vc:merge-worktree": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-merge-worktree/SKILL.md",
+      "computedHash": "621b98a65512833c513f3014e5588b323da8f60e253b543d9a7e995bc292c98a"
+    },
+    "vc:predict": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-predict/SKILL.md",
+      "computedHash": "6be0a844c11a6072d06d1f584ecbc3e6f277ec878690b3ff6a89991bc6c7d9c8"
+    },
+    "vc:preview": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-preview/SKILL.md",
+      "computedHash": "603f9e17e202be4617d1f9b278b90055956792adf97c9543e889d0b16e8eb041"
+    },
+    "vc:problem-solving": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-problem-solving/SKILL.md",
+      "computedHash": "62f104b03d0e28e686c479c0a4ca7729a6ad152fe5622bb3e130607f8da4d4eb"
+    },
+    "vc:publish": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-publish/SKILL.md",
+      "computedHash": "df98b4d6f19b9bdd2530dbaa409ffd226c28c5e1b6bb78a0b64353de1c18b202"
+    },
+    "vc:repomix": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-repomix/SKILL.md",
+      "computedHash": "63561b9a29b9f46d0bcc7a39c98cfc5d4e555f21015427757780b5be5ddca5c1"
+    },
+    "vc:scenario": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-scenario/SKILL.md",
+      "computedHash": "d469131fc7e80379084f6d1ebde13ccf7f1a10b720923f3fb077a4a818054f21"
+    },
+    "vc:scout": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-scout/SKILL.md",
+      "computedHash": "ec20e5d956df219a49a13a2c06a809ce6c3e4eeaddf7cb49ec92e8b670524fa7"
+    },
+    "vc:security": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-security/SKILL.md",
+      "computedHash": "cdaf411255306920072a13f1965ec6eb64e52e4788216a8f758f2cd69a9fadfe"
+    },
+    "vc:sequential-thinking": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-sequential-thinking/SKILL.md",
+      "computedHash": "c411b337990016b1549e1a81033c120096892cbf0e11a22f86fb05570650b56b"
+    },
+    "vc:setup": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-setup/SKILL.md",
+      "computedHash": "e7fcf3a739213719715a7feb9747aede4a29619efca5b75ce36e7cba7cb7b727"
+    },
+    "vc:team": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-team/SKILL.md",
+      "computedHash": "fa54d619ddf3f5b299b79503e099a2e8769a25c2e64223e818fe83b9e4b8cd6e"
+    },
+    "vc:tech-graph": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-tech-graph/SKILL.md",
+      "computedHash": "00c7f315ce07b20d153eeaf9111d9cd419e79eb667945dd2389ff7d97f7e973b"
+    },
+    "vc:update": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-update/SKILL.md",
+      "computedHash": "e501e3a1120733dacd748b0cf1b8ebbcdc6725aaee1e30fdb7df1d24081cc2f1"
+    },
+    "vc:watzup": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-watzup/SKILL.md",
+      "computedHash": "7b3d409e598d420399cd1b57333defd7a14e7da2cf36e0873e81b78ba1c4946a"
+    },
+    "vc:web-testing": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-web-testing/SKILL.md",
+      "computedHash": "714ab2ecbb86de1b8bf3c4e9722399985199cf50bf098c316e98710a69445d34"
+    },
+    "vc:xia": {
+      "source": "withkynam/vibecode-pro-max-kit",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/vc-xia/SKILL.md",
+      "computedHash": "5505e6b2cf3ae83d6a3c86f09f6cba336f131fe430f38e957a1e830744689c93"
+    }
+  }
+}

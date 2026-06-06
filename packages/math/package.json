@@ -1,0 +1,74 @@
+{
+  "name": "@analyx-sdk/math",
+  "version": "2026.0.1-alpha",
+  "description": "Numerical engine for Analyx PLS-SEM",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./matrix": {
+      "types": "./dist/matrix/index.d.ts",
+      "import": "./dist/matrix/index.mjs",
+      "require": "./dist/matrix/index.cjs"
+    },
+    "./linalg": {
+      "types": "./dist/linalg/index.d.ts",
+      "import": "./dist/linalg/index.mjs",
+      "require": "./dist/linalg/index.cjs"
+    },
+    "./regression": {
+      "types": "./dist/regression/index.d.ts",
+      "import": "./dist/regression/index.mjs",
+      "require": "./dist/regression/index.cjs"
+    },
+    "./descriptive": {
+      "types": "./dist/descriptive/index.d.ts",
+      "import": "./dist/descriptive/index.mjs",
+      "require": "./dist/descriptive/index.cjs"
+    },
+    "./corr": {
+      "types": "./dist/corr/index.d.ts",
+      "import": "./dist/corr/index.mjs",
+      "require": "./dist/corr/index.cjs"
+    },
+    "./resample": {
+      "types": "./dist/resample/index.d.ts",
+      "import": "./dist/resample/index.mjs",
+      "require": "./dist/resample/index.cjs"
+    },
+    "./distributions": {
+      "types": "./dist/distributions/index.d.ts",
+      "import": "./dist/distributions/index.mjs",
+      "require": "./dist/distributions/index.cjs"
+    },
+    "./quantile": {
+      "types": "./dist/quantile/index.d.ts",
+      "import": "./dist/quantile/index.mjs",
+      "require": "./dist/quantile/index.cjs"
+    },
+    "./validate": {
+      "types": "./dist/validate/index.d.ts",
+      "import": "./dist/validate/index.mjs",
+      "require": "./dist/validate/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.0",
+    "vitest": "^2.1.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3"
+  },
+  "sideEffects": false
+}
