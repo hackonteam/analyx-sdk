@@ -1,6 +1,6 @@
-export type Mode = "A" | "B";
+export type Mode = 'A' | 'B';
 
-export type InnerScheme = "centroid" | "factor" | "path";
+export type InnerScheme = 'centroid' | 'factor' | 'path';
 
 export interface ConstructSpec {
   name: string;
@@ -55,7 +55,7 @@ export function getColumns(dataset: Dataset, names: string[]): Float64Array {
   const k = names.length;
   const result = new Float64Array(n * k);
   const src = dataset.data;
-  const indices = names.map(name => dataset.columns.indexOf(name));
+  const indices = names.map((name) => dataset.columns.indexOf(name));
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < k; j++) {
       result[i * k + j] = src[i * dataset.cols + indices[j]];

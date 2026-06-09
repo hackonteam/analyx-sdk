@@ -31,12 +31,12 @@ export function mean(data: Float64Array): number {
       count++;
     }
   }
-  return count > 0 ? sum / count : NaN;
+  return count > 0 ? sum / count : Number.NaN;
 }
 
 export function variance(data: Float64Array, sample = true): number {
   const state = welfordMeanVariance(data);
-  if (state.count < (sample ? 2 : 1)) return NaN;
+  if (state.count < (sample ? 2 : 1)) return Number.NaN;
   return state.m2 / (sample ? state.count - 1 : state.count);
 }
 

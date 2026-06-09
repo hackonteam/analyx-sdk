@@ -4,19 +4,13 @@ const INV_SQRT_2PI = 1 / Math.sqrt(2 * Math.PI);
 
 const LANCZOS_G = 7;
 const LANCZOS_COEFFS = [
-  0.99999999999980993,
-  676.5203681218851,
-  -1259.1392167224028,
-  771.32342877765313,
-  -176.61502916214059,
-  12.507343278686905,
-  -0.13857109526572012,
-  9.9843695780195716e-6,
+  0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313,
+  -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6,
   1.5056327351493116e-7,
 ];
 
 export function lnGamma(z: number): number {
-  if (z <= 0) return NaN;
+  if (z <= 0) return Number.NaN;
   if (z === 0.5) return 0.5 * Math.log(Math.PI);
   if (z === 1) return 0;
   if (z === 2) return 0;
@@ -30,19 +24,19 @@ export function lnGamma(z: number): number {
   if (z < 0.5) {
     return Math.log(Math.PI / Math.sin(Math.PI * z)) - lnGamma(1 - z);
   }
-  z -= 1;
+  const zAdj = z - 1;
   let x = LANCZOS_COEFFS[0];
   for (let i = 1; i < LANCZOS_COEFFS.length; i++) {
-    x += LANCZOS_COEFFS[i] / (z + i);
+    x += LANCZOS_COEFFS[i] / (zAdj + i);
   }
-  const t = z + LANCZOS_G + 0.5;
-  return Math.log(x * SQRT_PI) + (z + 0.5) * Math.log(t) - t;
+  const t = zAdj + LANCZOS_G + 0.5;
+  return Math.log(x * SQRT_PI) + (zAdj + 0.5) * Math.log(t) - t;
 }
 
 export function erf(x: number): number {
   if (x === 0) return 0;
   const sign = x < 0 ? -1 : 1;
-  x = Math.abs(x);
+  const absX = Math.abs(x);
 
   const p = 0.3275911;
   const a1 = 0.254829592;
@@ -51,19 +45,21 @@ export function erf(x: number): number {
   const a4 = -1.453152027;
   const a5 = 1.061405429;
 
-  const t = 1 / (1 + p * x);
+  const t = 1 / (1 + p * absX);
   const poly = a1 * t + a2 * t * t + a3 * t * t * t + a4 * t * t * t * t + a5 * t * t * t * t * t;
-  return sign * (1 - poly * Math.exp(-x * x));
+  return sign * (1 - poly * Math.exp(-absX * absX));
 }
 
 export function erfc(x: number): number {
   return 1 - erf(x);
 }
 
+const NORMAL_CDF_COEFFS = [2.515517, 0.802853, 0.010328, 1.432788, 0.189269, 0.001308];
+
 export function betaIncomplete(x: number, a: number, b: number): number {
   if (x <= 0) return 0;
   if (x >= 1) return 1;
-  if (a <= 0 || b <= 0) return NaN;
+  if (a <= 0 || b <= 0) return Number.NaN;
 
   const lnBeta = lnGamma(a) + lnGamma(b) - lnGamma(a + b);
   const front = Math.exp(a * Math.log(x) + b * Math.log(1 - x) - lnBeta) / a;
@@ -83,10 +79,10 @@ export function betaIncomplete(x: number, a: number, b: number): number {
     let aa: number;
     if (m % 2 === 1) {
       const k = (m + 1) / 2;
-      aa = -k * (a + k - 1) * x / ((a + 2 * k - 2) * (a + 2 * k - 1));
+      aa = (-k * (a + k - 1) * x) / ((a + 2 * k - 2) * (a + 2 * k - 1));
     } else {
       const k = m / 2;
-      aa = k * (b - k) * x / ((a + 2 * k - 1) * (a + 2 * k));
+      aa = (k * (b - k) * x) / ((a + 2 * k - 1) * (a + 2 * k));
     }
     d = 1 + aa * d;
     if (Math.abs(d) < eps) d = eps;
@@ -104,23 +100,31 @@ export function betaIncomplete(x: number, a: number, b: number): number {
   return front * h;
 }
 
-const NORMAL_CDF_COEFFS = [
-  2.515517, 0.802853, 0.010328,
-  1.432788, 0.189269, 0.001308,
-];
-
 function normalQuantileApprox(p: number): number {
-  if (p <= 0 || p >= 1) return p <= 0 ? -Infinity : Infinity;
+  if (p <= 0 || p >= 1) return p <= 0 ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+
   const q = p - 0.5;
-  if (Math.abs(q) < 0.425) {
+
+  if (Math.abs(q) < 0.42) {
     const r = q * q;
-    return q * ((NORMAL_CDF_COEFFS[2] * r + NORMAL_CDF_COEFFS[1]) * r + NORMAL_CDF_COEFFS[0]) /
-           ((NORMAL_CDF_COEFFS[5] * r + NORMAL_CDF_COEFFS[4]) * r + NORMAL_CDF_COEFFS[3]);
+    return (
+      (q * ((NORMAL_CDF_COEFFS[2] * r + NORMAL_CDF_COEFFS[1]) * r + NORMAL_CDF_COEFFS[0])) /
+      ((NORMAL_CDF_COEFFS[5] * r + NORMAL_CDF_COEFFS[4]) * r + NORMAL_CDF_COEFFS[3])
+    );
   }
+
   const r = p < 0.5 ? p : 1 - p;
-  const rLog = Math.sqrt(-Math.log(r));
-  const val = NORMAL_CDF_COEFFS[2] * rLog + NORMAL_CDF_COEFFS[1];
-  return p < 0.5 ? -rLog * val : rLog * val;
+  const t = Math.sqrt(-2 * Math.log(r));
+  const c0 = 2.515517;
+  const c1 = 0.802853;
+  const c2 = 0.010328;
+  const d1 = 1.432788;
+  const d2 = 0.189269;
+  const d3 = 0.001308;
+  const num = (c2 * t + c1) * t + c0;
+  const den = ((d3 * t + d2) * t + d1) * t + 1;
+  const val = t - num / den;
+  return p < 0.5 ? -val : val;
 }
 
 export const Normal = {
@@ -133,8 +137,8 @@ export const Normal = {
   },
 
   quantile(p: number): number {
-    if (p <= 0) return -Infinity;
-    if (p >= 1) return Infinity;
+    if (p <= 0) return Number.NEGATIVE_INFINITY;
+    if (p >= 1) return Number.POSITIVE_INFINITY;
     let x = normalQuantileApprox(p);
     for (let i = 0; i < 2; i++) {
       const cdf = Normal.cdf(x);
@@ -148,7 +152,7 @@ export const Normal = {
 
 export const StudentT = {
   cdf(t: number, df: number): number {
-    if (df <= 0) return NaN;
+    if (df <= 0) return Number.NaN;
     if (t === 0) return 0.5;
     if (t < 0) return 1 - StudentT.cdf(-t, df);
 
@@ -160,7 +164,7 @@ export const StudentT = {
   },
 
   pdf(t: number, df: number): number {
-    if (df <= 0) return NaN;
+    if (df <= 0) return Number.NaN;
     if (t === 0) {
       const a = (df + 1) / 2;
       const b = df / 2;
@@ -169,13 +173,16 @@ export const StudentT = {
     const a = df / 2;
     const b = 0.5;
     const lnBeta = lnGamma(a) + lnGamma(b) - lnGamma(a + b);
-    return Math.exp(a * Math.log(df / (df + t * t)) + b * Math.log(t * t / (df + t * t)) - lnBeta) / (t * Math.sqrt(df));
+    return (
+      Math.exp(a * Math.log(df / (df + t * t)) + b * Math.log((t * t) / (df + t * t)) - lnBeta) /
+      (t * Math.sqrt(df))
+    );
   },
 
   quantile(p: number, df: number): number {
-    if (p <= 0) return -Infinity;
-    if (p >= 1) return Infinity;
-    if (df <= 0) return NaN;
+    if (p <= 0) return Number.NEGATIVE_INFINITY;
+    if (p >= 1) return Number.POSITIVE_INFINITY;
+    if (df <= 0) return Number.NaN;
 
     // For large df, StudentT approaches Normal
     if (df > 100) {
@@ -184,7 +191,9 @@ export const StudentT = {
 
     let x = Normal.quantile(p);
     if (df < 5) {
-      x = Math.sign(p - 0.5) * Math.sqrt(df * (Math.exp(-2 * Math.log(1 - 2 * Math.abs(p - 0.5)) / df) - 1));
+      x =
+        Math.sign(p - 0.5) *
+        Math.sqrt(df * (Math.exp((-2 * Math.log(1 - 2 * Math.abs(p - 0.5))) / df) - 1));
     }
 
     // Bound the initial guess to prevent divergence
@@ -209,7 +218,7 @@ export const StudentT = {
   },
 
   pValueTwoSided(t: number, df: number): number {
-    if (df <= 0) return NaN;
+    if (df <= 0) return Number.NaN;
     const absT = Math.abs(t);
     const x = df / (df + absT * absT);
     return betaIncomplete(x, df / 2, 0.5);

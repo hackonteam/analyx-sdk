@@ -1,2 +1,2 @@
-export * from "./reliability.js";
-export * from "./validity.js";
+export * from './reliability.js';
+export * from './validity.js';

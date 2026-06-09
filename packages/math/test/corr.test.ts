@@ -1,21 +1,21 @@
-import { describe, it, expect } from "vitest";
-import { covariance, correlation, covarianceMatrix, correlationMatrix } from "../src/corr/index.js";
-import { Mat } from "../src/matrix/index.js";
+import { describe, expect, it } from 'vitest';
+import { correlation, correlationMatrix, covariance, covarianceMatrix } from '../src/corr/index.js';
+import { Mat } from '../src/matrix/index.js';
 
-describe("Correlation", () => {
-  it("should compute covariance", () => {
+describe('Correlation', () => {
+  it('should compute covariance', () => {
     const x = new Float64Array([1, 2, 3, 4, 5]);
     const y = new Float64Array([2, 4, 6, 8, 10]);
     expect(covariance(x, y)).toBe(5);
   });
 
-  it("should compute correlation", () => {
+  it('should compute correlation', () => {
     const x = new Float64Array([1, 2, 3, 4, 5]);
     const y = new Float64Array([2, 4, 6, 8, 10]);
     expect(correlation(x, y)).toBeCloseTo(1);
   });
 
-  it("should compute covariance matrix", () => {
+  it('should compute covariance matrix', () => {
     const data = Mat.from2D([
       [1, 2],
       [2, 4],
@@ -28,7 +28,7 @@ describe("Correlation", () => {
     expect(cov.get(1, 1)).toBeCloseTo(4);
   });
 
-  it("should compute correlation matrix", () => {
+  it('should compute correlation matrix', () => {
     const data = Mat.from2D([
       [1, 2],
       [2, 4],

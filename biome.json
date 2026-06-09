@@ -10,7 +10,8 @@
       "style": {
         "useImportType": "off",
         "useSingleVarDeclarator": "off",
-        "noVar": "off"
+        "noVar": "off",
+        "noNonNullAssertion": "off"
       },
       "suspicious": {
         "noRedundantUseStrict": "off",

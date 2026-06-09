@@ -1,5 +1,7 @@
-import { Mat } from "@analyx-sdk/math";
-import { correlation } from "@analyx-sdk/math/corr";
+import { Mat } from '@analyx-sdk/math';
+import { correlation, covariance } from '@analyx-sdk/math/corr';
+import { variance } from '@analyx-sdk/math/descriptive';
+import { Dataset } from '../model/spec.js';
 
 export interface ReliabilityResult {
   loadings: Map<string, Float64Array>;
@@ -14,8 +16,9 @@ export function computeReliability(
   constructNames: string[],
   indicators: Map<string, string[]>,
   loadings: Map<string, Float64Array>,
+  outerWeights: Map<string, Float64Array>,
   scores: Mat,
-  dataset: any
+  dataset: Dataset
 ): ReliabilityResult {
   const indicatorReliability = new Map<string, Float64Array>();
   const cronbachAlpha = new Map<string, number>();
@@ -55,7 +58,7 @@ export function computeReliability(
       indicatorData.push(col);
     }
 
-    let alpha = NaN;
+    let alpha = Number.NaN;
     if (k > 1) {
       let sumCov = 0;
       let sumVar = 0;
@@ -69,27 +72,22 @@ export function computeReliability(
     }
     cronbachAlpha.set(cName, alpha);
 
-    let rhoAVal = NaN;
+    let rhoAVal = Number.NaN;
     if (k > 1) {
-      const weight = new Float64Array(k);
-      weight.fill(1 / k);
-      let num = 0;
-      let den = 0;
+      const weight = outerWeights.get(cName)!;
+      let omegaSomega = 0;
       for (let i = 0; i < k; i++) {
         for (let j = 0; j < k; j++) {
           const cov = covariance(indicatorData[i], indicatorData[j]);
-          num += weight[i] * weight[j] * cov;
+          omegaSomega += weight[i] * weight[j] * cov;
         }
       }
+      let sumWeightSqVar = 0;
       for (let i = 0; i < k; i++) {
-        den += weight[i] * weight[i] * variance(indicatorData[i]);
-        for (let j = 0; j < k; j++) {
-          if (i !== j) {
-            den += weight[i] * weight[j] * covariance(indicatorData[i], indicatorData[j]);
-          }
-        }
+        const var_i = variance(indicatorData[i]);
+        sumWeightSqVar += weight[i] * weight[i] * var_i;
       }
-      rhoAVal = num / den;
+      rhoAVal = (omegaSomega - sumWeightSqVar) / omegaSomega;
     }
     rhoA.set(cName, rhoAVal);
   }
@@ -102,32 +100,4 @@ export function computeReliability(
     rhoA,
     AVE,
   };
-}
-
-function variance(data: Float64Array): number {
-  let mean = 0;
-  for (let i = 0; i < data.length; i++) mean += data[i];
-  mean /= data.length;
-  let m2 = 0;
-  for (let i = 0; i < data.length; i++) {
-    const d = data[i] - mean;
-    m2 += d * d;
-  }
-  return m2 / (data.length - 1);
-}
-
-function covariance(x: Float64Array, y: Float64Array): number {
-  if (x.length !== y.length) return NaN;
-  const n = x.length;
-  let meanX = 0, meanY = 0;
-  for (let i = 0; i < n; i++) {
-    meanX += x[i];
-    meanY += y[i];
-  }
-  meanX /= n; meanY /= n;
-  let cov = 0;
-  for (let i = 0; i < n; i++) {
-    cov += (x[i] - meanX) * (y[i] - meanY);
-  }
-  return cov / (n - 1);
 }

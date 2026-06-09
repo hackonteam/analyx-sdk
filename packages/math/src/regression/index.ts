@@ -1,6 +1,6 @@
-import { Mat } from "../matrix/index.js";
-import { qrDecompose, qrSolve } from "../linalg/index.js";
-import { mean, variance } from "../descriptive/index.js";
+import { mean, variance } from '../descriptive/index.js';
+import { qrDecompose, qrSolve } from '../linalg/index.js';
+import { Mat } from '../matrix/index.js';
 
 export interface OLSResult {
   coef: Float64Array;
@@ -105,7 +105,7 @@ export function ols(X: Mat, y: Float64Array, options: OLSOptions = {}): OLSResul
 
   const rSquared = ssTot === 0 ? 1 : 1 - ssRes / ssTot;
   const df = n - (intercept ? p + 1 : p);
-  const adjRSquared = df <= 0 ? rSquared : 1 - (1 - rSquared) * (n - 1) / df;
+  const adjRSquared = df <= 0 ? rSquared : 1 - ((1 - rSquared) * (n - 1)) / df;
 
   return {
     coef: finalCoef,

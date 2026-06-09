@@ -1,7 +1,7 @@
-import { ModelSpec, ConstructSpec, PathSpec, Dataset } from "./spec.js";
+import { ConstructSpec, Dataset, ModelSpec, PathSpec } from './spec.js';
 
 export function validateModel(model: ModelSpec, dataset: Dataset): void {
-  const constructNames = new Set(model.constructs.map(c => c.name));
+  const constructNames = new Set(model.constructs.map((c) => c.name));
 
   for (const construct of model.constructs) {
     if (construct.indicators.length === 0) {
@@ -24,7 +24,7 @@ export function validateModel(model: ModelSpec, dataset: Dataset): void {
   }
 
   if (hasCycles(model)) {
-    throw new Error("Structural model contains cycles");
+    throw new Error('Structural model contains cycles');
   }
 }
 
@@ -34,7 +34,7 @@ function hasCycles(model: ModelSpec): boolean {
     adj.set(c.name, []);
   }
   for (const path of model.paths) {
-    adj.get(path.from)!.push(path.to);
+    adj.get(path.from)?.push(path.to);
   }
 
   const visited = new Set<string>();

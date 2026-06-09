@@ -1,5 +1,5 @@
 export function percentile(sortedAsc: Float64Array, p: number): number {
-  if (sortedAsc.length === 0) return NaN;
+  if (sortedAsc.length === 0) return Number.NaN;
   if (p <= 0) return sortedAsc[0];
   if (p >= 100) return sortedAsc[sortedAsc.length - 1];
 
@@ -13,5 +13,5 @@ export function percentile(sortedAsc: Float64Array, p: number): number {
 }
 
 export function percentiles(sortedAsc: Float64Array, ps: number[]): number[] {
-  return ps.map(p => percentile(sortedAsc, p));
+  return ps.map((p) => percentile(sortedAsc, p));
 }

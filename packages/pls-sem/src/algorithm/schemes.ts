@@ -1,6 +1,8 @@
-import { Mat } from "@analyx-sdk/math";
-import { correlation } from "@analyx-sdk/math/corr";
-import { InnerScheme } from "../model/spec.js";
+import { Mat } from '@analyx-sdk/math';
+import { correlation } from '@analyx-sdk/math/corr';
+import { standardize } from '@analyx-sdk/math/descriptive';
+import { ols } from '@analyx-sdk/math/regression';
+import { InnerScheme } from '../model/spec.js';
 
 export function computeInnerWeights(
   scores: Map<string, Float64Array>,
@@ -13,23 +15,50 @@ export function computeInnerWeights(
     const weights = new Map<string, number>();
     const allNeighbors = [...cInfo.predecessors, ...cInfo.successors];
 
-    for (const neighbor of allNeighbors) {
-      const scoreC = scores.get(cName)!;
-      const scoreN = scores.get(neighbor)!;
-      const corr = correlation(scoreC, scoreN);
-
-      if (scheme === "centroid") {
+    if (scheme === 'centroid') {
+      for (const neighbor of allNeighbors) {
+        const scoreC = scores.get(cName)!;
+        const scoreN = scores.get(neighbor)!;
+        const corr = correlation(scoreC, scoreN);
         weights.set(neighbor, corr >= 0 ? 1 : -1);
-      } else if (scheme === "factor") {
+      }
+    } else if (scheme === 'factor') {
+      for (const neighbor of allNeighbors) {
+        const scoreC = scores.get(cName)!;
+        const scoreN = scores.get(neighbor)!;
+        const corr = correlation(scoreC, scoreN);
         weights.set(neighbor, corr);
-      } else if (scheme === "path") {
+      }
+    } else if (scheme === 'path') {
+      for (const neighbor of allNeighbors) {
+        const scoreC = scores.get(cName)!;
+        const scoreN = scores.get(neighbor)!;
+
         if (cInfo.successors.includes(neighbor)) {
+          const corr = correlation(scoreC, scoreN);
           weights.set(neighbor, corr);
         } else if (cInfo.predecessors.includes(neighbor)) {
-          weights.set(neighbor, corr);
+          const preds = cInfo.predecessors;
+          if (preds.length === 1) {
+            const corr = correlation(scoreC, scoreN);
+            weights.set(neighbor, corr);
+          } else {
+            const n = scoreC.length;
+            const X = Mat.zeros(n, preds.length);
+            for (let j = 0; j < preds.length; j++) {
+              const predScore = scores.get(preds[j])!;
+              for (let i = 0; i < n; i++) {
+                X.set(i, j, predScore[i]);
+              }
+            }
+            const result = ols(X, scoreC, { intercept: false });
+            const predIdx = preds.indexOf(neighbor);
+            weights.set(neighbor, result.coef[predIdx]);
+          }
         }
       }
     }
+
     innerWeights.set(cName, weights);
   }
 
@@ -45,7 +74,9 @@ export function computeInnerScores(
 
   for (const [cName, cInfo] of constructs) {
     const weights = innerWeights.get(cName)!;
-    const n = scores.get(cName)!.length;
+    const score = scores.get(cName);
+    if (!score) continue;
+    const n = score.length;
     const inner = new Float64Array(n);
 
     for (const [neighbor, weight] of weights) {
@@ -59,25 +90,4 @@ export function computeInnerScores(
   }
 
   return innerScores;
-}
-
-function standardize(data: Float64Array): Float64Array {
-  let mean = 0;
-  for (let i = 0; i < data.length; i++) mean += data[i];
-  mean /= data.length;
-
-  let m2 = 0;
-  for (let i = 0; i < data.length; i++) {
-    const d = data[i] - mean;
-    m2 += d * d;
-  }
-  const std = Math.sqrt(m2 / (data.length - 1));
-
-  if (std === 0) return new Float64Array(data.length);
-
-  const result = new Float64Array(data.length);
-  for (let i = 0; i < data.length; i++) {
-    result[i] = (data[i] - mean) / std;
-  }
-  return result;
 }

@@ -1,4 +1,4 @@
-export type { MatrixLike } from "../types.js";
+export type { MatrixLike } from '../types.js';
 
 export class Mat {
   readonly rows: number;
@@ -100,7 +100,7 @@ export class Mat {
 
   sub(other: Mat): Mat {
     if (this.rows !== other.rows || this.cols !== other.cols) {
-      throw new Error("Dimension mismatch for subtraction");
+      throw new Error('Dimension mismatch for subtraction');
     }
     const result = new Mat(this.rows, this.cols);
     const a = this.data;
@@ -114,7 +114,7 @@ export class Mat {
 
   add(other: Mat): Mat {
     if (this.rows !== other.rows || this.cols !== other.cols) {
-      throw new Error("Dimension mismatch for addition");
+      throw new Error('Dimension mismatch for addition');
     }
     const result = new Mat(this.rows, this.cols);
     const a = this.data;

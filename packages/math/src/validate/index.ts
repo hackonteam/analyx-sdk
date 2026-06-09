@@ -28,7 +28,12 @@ export function assertSquare(matrix: { rows: number; cols: number }, name: strin
   }
 }
 
-export function assertSameLength(a: { length: number }, b: { length: number }, nameA: string, nameB: string): void {
+export function assertSameLength(
+  a: { length: number },
+  b: { length: number },
+  nameA: string,
+  nameB: string
+): void {
   if (a.length !== b.length) {
     throw new Error(`${nameA} and ${nameB} must have same length, got ${a.length} and ${b.length}`);
   }

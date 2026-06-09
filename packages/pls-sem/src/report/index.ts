@@ -1,12 +1,12 @@
-import { ModelSpec, Dataset } from "../model/spec.js";
-import { EstimateResult } from "../algorithm/estimate.js";
-import { ReliabilityResult } from "../measurement/reliability.js";
-import { ValidityResult } from "../measurement/validity.js";
-import { StructuralResult } from "../structural/index.js";
-import { BootstrapResult, ParamStat } from "../inference/bootstrap.js";
-import { computeReliability } from "../measurement/reliability.js";
-import { computeValidity } from "../measurement/validity.js";
-import { computeStructural } from "../structural/index.js";
+import { EstimateResult } from '../algorithm/estimate.js';
+import { BootstrapResult, ParamStat } from '../inference/bootstrap.js';
+import { ReliabilityResult } from '../measurement/reliability.js';
+import { computeReliability } from '../measurement/reliability.js';
+import { ValidityResult } from '../measurement/validity.js';
+import { computeValidity } from '../measurement/validity.js';
+import { Dataset, ModelSpec } from '../model/spec.js';
+import { StructuralResult } from '../structural/index.js';
+import { computeStructural } from '../structural/index.js';
 
 export interface AssessmentResult {
   measurement: {
@@ -49,6 +49,7 @@ export function assess(
     estimate.constructNames,
     indicatorsMap,
     estimate.loadings,
+    estimate.outerWeights,
     estimate.scores,
     dataset
   );
@@ -100,7 +101,9 @@ function mapToRecordNumber(map: Map<string, number>): Record<string, number> {
   return obj;
 }
 
-function nestedMapToRecord(map: Map<string, Map<string, number>>): Record<string, Record<string, number>> {
+function nestedMapToRecord(
+  map: Map<string, Map<string, number>>
+): Record<string, Record<string, number>> {
   const obj: Record<string, Record<string, number>> = {};
   for (const [key, inner] of map) {
     obj[key] = {};
@@ -111,18 +114,20 @@ function nestedMapToRecord(map: Map<string, Map<string, number>>): Record<string
   return obj;
 }
 
-export function formatBootstrapResult(bootstrap: BootstrapResult): Record<string, Record<string, ParamStat>> {
+export function formatBootstrapResult(
+  bootstrap: BootstrapResult
+): Record<string, Record<string, ParamStat>> {
   const result: Record<string, Record<string, ParamStat>> = {};
   const categories: [string, Map<string, ParamStat>][] = [
-    ["paths", bootstrap.paths],
-    ["loadings", bootstrap.loadings],
-    ["htmt", bootstrap.htmt],
-    ["outerWeights", bootstrap.outerWeights],
-    ["rSquared", bootstrap.rSquared],
-    ["compositeReliability", bootstrap.compositeReliability],
-    ["AVE", bootstrap.AVE],
-    ["cronbachAlpha", bootstrap.cronbachAlpha],
-    ["rhoA", bootstrap.rhoA],
+    ['paths', bootstrap.paths],
+    ['loadings', bootstrap.loadings],
+    ['htmt', bootstrap.htmt],
+    ['outerWeights', bootstrap.outerWeights],
+    ['rSquared', bootstrap.rSquared],
+    ['compositeReliability', bootstrap.compositeReliability],
+    ['AVE', bootstrap.AVE],
+    ['cronbachAlpha', bootstrap.cronbachAlpha],
+    ['rhoA', bootstrap.rhoA],
   ];
 
   for (const [category, params] of categories) {

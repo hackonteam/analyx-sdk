@@ -1,10 +1,10 @@
-import { Mat } from "@analyx-sdk/math";
-import { standardize } from "@analyx-sdk/math/descriptive";
-import { covariance, correlation } from "@analyx-sdk/math/corr";
-import { ols } from "@analyx-sdk/math/regression";
-import { ModelSpec, ConstructSpec, PathSpec, Dataset, Mode, InnerScheme } from "../model/spec.js";
-import { computeInnerWeights, computeInnerScores } from "./schemes.js";
-import { checkConvergence } from "./converge.js";
+import { Mat } from '@analyx-sdk/math';
+import { correlation, covariance } from '@analyx-sdk/math/corr';
+import { standardize } from '@analyx-sdk/math/descriptive';
+import { ols } from '@analyx-sdk/math/regression';
+import { ConstructSpec, Dataset, InnerScheme, Mode, ModelSpec, PathSpec } from '../model/spec.js';
+import { checkConvergence } from './converge.js';
+import { computeInnerScores, computeInnerWeights } from './schemes.js';
 
 export interface EstimateResult {
   outerWeights: Map<string, Float64Array>;
@@ -19,13 +19,13 @@ export interface EstimateResult {
 export function estimate(
   model: ModelSpec,
   dataset: Dataset,
-  seed: number = 12345,
+  seed = 12345,
   options: { maxIter?: number; tol?: number } = {}
 ): EstimateResult {
   const { maxIter = 300, tol = 1e-7 } = options;
 
-  const constructNames = model.constructs.map(c => c.name);
-  const allIndicators = model.constructs.flatMap(c => c.indicators);
+  const constructNames = model.constructs.map((c) => c.name);
+  const allIndicators = model.constructs.flatMap((c) => c.indicators);
   const n = dataset.rows;
 
   const X = extractIndicatorMatrix(dataset, allIndicators);
@@ -34,7 +34,10 @@ export function estimate(
   const constructIndices = new Map<string, number[]>();
   let idx = 0;
   for (const c of model.constructs) {
-    constructIndices.set(c.name, Array.from({ length: c.indicators.length }, () => idx++));
+    constructIndices.set(
+      c.name,
+      Array.from({ length: c.indicators.length }, () => idx++)
+    );
   }
 
   const predecessors = new Map<string, string[]>();
@@ -44,11 +47,14 @@ export function estimate(
     successors.set(c.name, []);
   }
   for (const path of model.paths) {
-    successors.get(path.from)!.push(path.to);
-    predecessors.get(path.to)!.push(path.from);
+    successors.get(path.from)?.push(path.to);
+    predecessors.get(path.to)?.push(path.from);
   }
 
-  const constructsInfo = new Map<string, { name: string; predecessors: string[]; successors: string[] }>();
+  const constructsInfo = new Map<
+    string,
+    { name: string; predecessors: string[]; successors: string[] }
+  >();
   for (const c of model.constructs) {
     constructsInfo.set(c.name, {
       name: c.name,
@@ -89,7 +95,7 @@ export function estimate(
       scores.set(c.name, standardize(score));
     }
 
-    const innerWeights = computeInnerWeights(scores, constructsInfo, model.scheme ?? "path");
+    const innerWeights = computeInnerWeights(scores, constructsInfo, model.scheme ?? 'path');
     const innerScores = computeInnerScores(scores, innerWeights, constructsInfo);
 
     const newOuterWeights = new Map<string, Float64Array>();
@@ -98,7 +104,7 @@ export function estimate(
       const k = indices.length;
       const inner = innerScores.get(c.name)!;
 
-      if (c.mode === "A") {
+      if (c.mode === 'A') {
         const w = new Float64Array(k);
         for (let j = 0; j < k; j++) {
           const indicator = Xstd.col(indices[j]);

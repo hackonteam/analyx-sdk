@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest";
-import { ols, olsWithIntercept } from "../src/regression/index.js";
-import { Mat } from "../src/matrix/index.js";
+import { describe, expect, it } from 'vitest';
+import { Mat } from '../src/matrix/index.js';
+import { ols, olsWithIntercept } from '../src/regression/index.js';
 
-describe("OLS Regression", () => {
-  it("should fit simple linear regression without intercept", () => {
+describe('OLS Regression', () => {
+  it('should fit simple linear regression without intercept', () => {
     const X = Mat.from2D([[1], [2], [3], [4], [5]]);
     const y = new Float64Array([2, 4, 6, 8, 10]);
     const result = ols(X, y);
@@ -11,7 +11,7 @@ describe("OLS Regression", () => {
     expect(result.rSquared).toBeCloseTo(1, 10);
   });
 
-  it("should fit regression with intercept", () => {
+  it('should fit regression with intercept', () => {
     const X = Mat.from2D([[1], [2], [3], [4], [5]]);
     const y = new Float64Array([3, 5, 7, 9, 11]);
     const result = olsWithIntercept(X, y);
@@ -20,7 +20,7 @@ describe("OLS Regression", () => {
     expect(result.rSquared).toBeCloseTo(1, 10);
   });
 
-  it("should compute residuals and fitted values", () => {
+  it('should compute residuals and fitted values', () => {
     const X = Mat.from2D([[1], [2], [3]]);
     const y = new Float64Array([2, 4, 7]);
     const result = ols(X, y);
@@ -31,8 +31,13 @@ describe("OLS Regression", () => {
     }
   });
 
-  it("should compute adjusted R-squared", () => {
-    const X = Mat.from2D([[1, 2], [2, 1], [3, 4], [4, 3]]);
+  it('should compute adjusted R-squared', () => {
+    const X = Mat.from2D([
+      [1, 2],
+      [2, 1],
+      [3, 4],
+      [4, 3],
+    ]);
     const y = new Float64Array([3, 5, 7, 9]);
     const result = olsWithIntercept(X, y);
     expect(result.adjRSquared).toBeLessThanOrEqual(result.rSquared);

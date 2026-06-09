@@ -1,7 +1,7 @@
-import { Mat } from "@analyx-sdk/math";
-import { ols } from "@analyx-sdk/math/regression";
-import { ModelSpec, PathSpec, ConstructSpec } from "../model/spec.js";
-import { EstimateResult } from "../algorithm/estimate.js";
+import { Mat } from '@analyx-sdk/math';
+import { ols } from '@analyx-sdk/math/regression';
+import { EstimateResult } from '../algorithm/estimate.js';
+import { ConstructSpec, ModelSpec, PathSpec } from '../model/spec.js';
 
 export interface StructuralResult {
   pathCoefficients: Map<string, number>;
@@ -11,10 +11,7 @@ export interface StructuralResult {
   vif: Map<string, number>;
 }
 
-export function computeStructural(
-  model: ModelSpec,
-  estimate: EstimateResult
-): StructuralResult {
+export function computeStructural(model: ModelSpec, estimate: EstimateResult): StructuralResult {
   const constructNames = estimate.constructNames;
   const scores = estimate.scores;
   const n = scores.rows;
@@ -24,7 +21,7 @@ export function computeStructural(
     predecessors.set(c.name, []);
   }
   for (const path of model.paths) {
-    predecessors.get(path.to)!.push(path.from);
+    predecessors.get(path.to)?.push(path.from);
   }
 
   const pathCoefficients = new Map<string, number>();

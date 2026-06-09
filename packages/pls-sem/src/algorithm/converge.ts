@@ -1,4 +1,4 @@
-import { ConstructSpec } from "../model/spec.js";
+import { ConstructSpec } from '../model/spec.js';
 
 export interface ConvergenceResult {
   converged: boolean;
@@ -10,7 +10,7 @@ export function checkConvergence(
   oldWeights: Map<string, Float64Array>,
   newWeights: Map<string, Float64Array>,
   constructs: ConstructSpec[],
-  tol: number = 1e-7
+  tol = 1e-7
 ): ConvergenceResult {
   let maxDelta = 0;
   for (const c of constructs) {

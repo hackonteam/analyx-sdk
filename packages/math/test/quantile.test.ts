@@ -1,8 +1,8 @@
-import { describe, it, expect } from "vitest";
-import { percentile, percentiles } from "../src/quantile/index.js";
+import { describe, expect, it } from 'vitest';
+import { percentile, percentiles } from '../src/quantile/index.js';
 
-describe("Quantile", () => {
-  it("should compute percentile with linear interpolation", () => {
+describe('Quantile', () => {
+  it('should compute percentile with linear interpolation', () => {
     const data = new Float64Array([1, 2, 3, 4, 5]);
     expect(percentile(data, 0)).toBe(1);
     expect(percentile(data, 100)).toBe(5);
@@ -11,12 +11,12 @@ describe("Quantile", () => {
     expect(percentile(data, 75)).toBe(4);
   });
 
-  it("should handle interpolation", () => {
+  it('should handle interpolation', () => {
     const data = new Float64Array([1, 2, 3, 4]);
     expect(percentile(data, 50)).toBe(2.5);
   });
 
-  it("should compute multiple percentiles", () => {
+  it('should compute multiple percentiles', () => {
     const data = new Float64Array([1, 2, 3, 4, 5]);
     const ps = [25, 50, 75];
     const result = percentiles(data, ps);

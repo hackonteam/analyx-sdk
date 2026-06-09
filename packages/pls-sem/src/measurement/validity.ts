@@ -1,5 +1,6 @@
-import { Mat } from "@analyx-sdk/math";
-import { correlation } from "@analyx-sdk/math/corr";
+import { Mat } from '@analyx-sdk/math';
+import { correlation } from '@analyx-sdk/math/corr';
+import { Dataset } from '../model/spec.js';
 
 export interface ValidityResult {
   fornellLarcker: Map<string, Map<string, number>>;
@@ -12,7 +13,7 @@ export function computeValidity(
   indicators: Map<string, string[]>,
   loadings: Map<string, Float64Array>,
   scores: Mat,
-  dataset: any,
+  dataset: Dataset,
   AVE: Map<string, number>
 ): ValidityResult {
   const fornellLarcker = new Map<string, Map<string, number>>();
@@ -27,10 +28,40 @@ export function computeValidity(
     flRow.set(cName, sqrtAVE);
     for (const other of constructNames) {
       if (other !== cName) {
-        flRow.set(other, scoreCorr.get(cName)!.get(other)!);
+        flRow.set(other, scoreCorr.get(cName)?.get(other)!);
       }
     }
     fornellLarcker.set(cName, flRow);
+  }
+
+  const indicatorCache = new Map<string, Float64Array>();
+  for (const cName of constructNames) {
+    for (const ind of indicators.get(cName)!) {
+      const idx = dataset.columns.indexOf(ind);
+      const col = new Float64Array(dataset.rows);
+      const src = dataset.data;
+      for (let i = 0; i < dataset.rows; i++) {
+        col[i] = src[i * dataset.cols + idx];
+      }
+      indicatorCache.set(ind, col);
+    }
+  }
+
+  const withinConstructMeanCorr = new Map<string, number>();
+  for (const cName of constructNames) {
+    const inds = indicators.get(cName)!;
+    let sum = 0;
+    let count = 0;
+    for (let i = 0; i < inds.length; i++) {
+      for (let j = i + 1; j < inds.length; j++) {
+        const corr = Math.abs(
+          correlation(indicatorCache.get(inds[i])!, indicatorCache.get(inds[j])!)
+        );
+        sum += corr;
+        count++;
+      }
+    }
+    withinConstructMeanCorr.set(cName, count > 0 ? sum / count : 1);
   }
 
   for (const cName of constructNames) {
@@ -45,22 +76,18 @@ export function computeValidity(
       let heteroSum = 0;
       let heteroCount = 0;
       for (const ic of indC) {
-        const idxC = dataset.columns.indexOf(ic);
-        const colC = new Float64Array(dataset.rows);
-        for (let i = 0; i < dataset.rows; i++) {
-          colC[i] = dataset.data[i * dataset.cols + idxC];
-        }
+        const colC = indicatorCache.get(ic)!;
         for (const io of indO) {
-          const idxO = dataset.columns.indexOf(io);
-          const colO = new Float64Array(dataset.rows);
-          for (let i = 0; i < dataset.rows; i++) {
-            colO[i] = dataset.data[i * dataset.cols + idxO];
-          }
+          const colO = indicatorCache.get(io)!;
           heteroSum += Math.abs(correlation(colC, colO));
           heteroCount++;
         }
       }
-      const htmtVal = heteroSum / heteroCount;
+      const numerator = heteroCount > 0 ? heteroSum / heteroCount : 0;
+      const denomC = withinConstructMeanCorr.get(cName)!;
+      const denomO = withinConstructMeanCorr.get(other)!;
+      const denominator = Math.sqrt(denomC * denomO);
+      const htmtVal = denominator > 0 ? numerator / denominator : 0;
       htmtRow.set(other, htmtVal);
     }
     htmt.set(cName, htmtRow);

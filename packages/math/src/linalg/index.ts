@@ -1,4 +1,4 @@
-import { Mat } from "../matrix/index.js";
+import { Mat } from '../matrix/index.js';
 
 export interface QRResult {
   Q: Mat;
@@ -80,7 +80,7 @@ export function qrDecompose(A: Mat): QRResult {
 
 export function choleskyDecompose(A: Mat): CholeskyResult {
   const n = A.rows;
-  if (A.cols !== n) throw new Error("Cholesky requires square matrix");
+  if (A.cols !== n) throw new Error('Cholesky requires square matrix');
 
   const L = Mat.zeros(n, n);
   const a = A.data;
@@ -94,7 +94,7 @@ export function choleskyDecompose(A: Mat): CholeskyResult {
       }
       if (i === j) {
         const val = a[i * n + i] - sum;
-        if (val <= 0) throw new Error("Matrix not positive definite");
+        if (val <= 0) throw new Error('Matrix not positive definite');
         l[i * n + j] = Math.sqrt(val);
       } else {
         l[i * n + j] = (a[i * n + j] - sum) / l[j * n + j];
@@ -153,7 +153,7 @@ export function qrSolve(QR: QRResult, b: Float64Array): Float64Array {
     }
     const diag = R.get(i, i);
     if (Math.abs(diag) < 1e-15) {
-      throw new Error("Singular matrix in QR solve");
+      throw new Error('Singular matrix in QR solve');
     }
     x[i] = sum / diag;
   }
@@ -163,7 +163,7 @@ export function qrSolve(QR: QRResult, b: Float64Array): Float64Array {
 
 function luDecompose(A: Mat): LUResult {
   const n = A.rows;
-  if (A.cols !== n) throw new Error("LU requires square matrix");
+  if (A.cols !== n) throw new Error('LU requires square matrix');
 
   const L = Mat.identity(n);
   const U = A.clone();
@@ -183,7 +183,7 @@ function luDecompose(A: Mat): LUResult {
       }
     }
 
-    if (maxVal < 1e-15) throw new Error("Singular matrix in LU");
+    if (maxVal < 1e-15) throw new Error('Singular matrix in LU');
 
     if (maxRow !== k) {
       for (let j = 0; j < n; j++) {
@@ -258,7 +258,7 @@ export function solve(A: Mat, b: Float64Array): Float64Array {
 
 export function inverse(A: Mat): Mat {
   const n = A.rows;
-  if (A.cols !== n) throw new Error("Inverse requires square matrix");
+  if (A.cols !== n) throw new Error('Inverse requires square matrix');
 
   const I = Mat.identity(n);
   const inv = Mat.zeros(n, n);

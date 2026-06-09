@@ -1,12 +1,13 @@
-import { Mat } from "../matrix/index.js";
-import { mean, variance } from "../descriptive/index.js";
+import { mean, variance } from '../descriptive/index.js';
+import { Mat } from '../matrix/index.js';
 
 export function covariance(x: Float64Array, y: Float64Array): number {
-  if (x.length !== y.length) throw new Error("Arrays must have same length");
+  if (x.length !== y.length) throw new Error('Arrays must have same length');
   const n = x.length;
-  if (n < 2) return NaN;
+  if (n < 2) return Number.NaN;
 
-  let sumX = 0, sumY = 0;
+  let sumX = 0,
+    sumY = 0;
   for (let i = 0; i < n; i++) {
     sumX += x[i];
     sumY += y[i];
@@ -25,7 +26,7 @@ export function correlation(x: Float64Array, y: Float64Array): number {
   const cov = covariance(x, y);
   const sdX = Math.sqrt(variance(x, true));
   const sdY = Math.sqrt(variance(y, true));
-  if (sdX === 0 || sdY === 0) return NaN;
+  if (sdX === 0 || sdY === 0) return Number.NaN;
   return cov / (sdX * sdY);
 }
 
@@ -67,15 +68,15 @@ export function correlationMatrix(data: Mat): Mat {
     result.set(i, i, 1);
     for (let j = i + 1; j < p; j++) {
       if (sds[i] === 0 || sds[j] === 0) {
-        result.set(i, j, NaN);
-        result.set(j, i, NaN);
+        result.set(i, j, Number.NaN);
+        result.set(j, i, Number.NaN);
         continue;
       }
       let cov = 0;
       for (let k = 0; k < n; k++) {
         cov += (cols[i][k] - means[i]) * (cols[j][k] - means[j]);
       }
-      cov /= (n - 1);
+      cov /= n - 1;
       const corr = cov / (sds[i] * sds[j]);
       result.set(i, j, corr);
       result.set(j, i, corr);

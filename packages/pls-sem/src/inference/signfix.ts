@@ -1,4 +1,4 @@
-import { EstimateResult } from "../algorithm/estimate.js";
+import { EstimateResult } from '../algorithm/estimate.js';
 
 export interface SignFixResult {
   outerWeights: Map<string, Float64Array>;
@@ -34,7 +34,7 @@ export function signFix(
       fixedLoadings.set(cName, fixedLd);
 
       for (const [path, coeff] of fixedPathCoeffs) {
-        const [from, to] = path.split("->");
+        const [from, to] = path.split('->');
         if (from === cName || to === cName) {
           fixedPathCoeffs.set(path, -coeff);
         }

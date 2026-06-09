@@ -1,9 +1,15 @@
-import { describe, it, expect } from "vitest";
-import { mulberry32, xoshiro256starstar, makeRNG, bootstrapIndices, kFoldIndices } from "../src/resample/index.js";
+import { describe, expect, it } from 'vitest';
+import {
+  bootstrapIndices,
+  kFoldIndices,
+  makeRNG,
+  mulberry32,
+  xoshiro256starstar,
+} from '../src/resample/index.js';
 
-describe("Resample", () => {
-  describe("PRNG", () => {
-    it("should produce deterministic sequence with mulberry32", () => {
+describe('Resample', () => {
+  describe('PRNG', () => {
+    it('should produce deterministic sequence with mulberry32', () => {
       const rng1 = mulberry32(12345);
       const rng2 = mulberry32(12345);
       for (let i = 0; i < 100; i++) {
@@ -11,7 +17,7 @@ describe("Resample", () => {
       }
     });
 
-    it("should produce deterministic sequence with xoshiro256**", () => {
+    it('should produce deterministic sequence with xoshiro256**', () => {
       const rng1 = xoshiro256starstar(12345);
       const rng2 = xoshiro256starstar(12345);
       for (let i = 0; i < 100; i++) {
@@ -19,7 +25,7 @@ describe("Resample", () => {
       }
     });
 
-    it("should produce values in [0, 1)", () => {
+    it('should produce values in [0, 1)', () => {
       const rng = makeRNG(12345);
       for (let i = 0; i < 1000; i++) {
         const val = rng.next();
@@ -29,8 +35,8 @@ describe("Resample", () => {
     });
   });
 
-  describe("bootstrapIndices", () => {
-    it("should generate correct number of bootstrap samples", () => {
+  describe('bootstrapIndices', () => {
+    it('should generate correct number of bootstrap samples', () => {
       const rng = makeRNG(12345);
       const indices = bootstrapIndices(10, 5, rng);
       expect(indices.length).toBe(5);
@@ -43,7 +49,7 @@ describe("Resample", () => {
       }
     });
 
-    it("should be deterministic with same seed", () => {
+    it('should be deterministic with same seed', () => {
       const rng1 = makeRNG(12345);
       const rng2 = makeRNG(12345);
       const indices1 = bootstrapIndices(10, 5, rng1);
@@ -56,8 +62,8 @@ describe("Resample", () => {
     });
   });
 
-  describe("kFoldIndices", () => {
-    it("should create k folds", () => {
+  describe('kFoldIndices', () => {
+    it('should create k folds', () => {
       const rng = makeRNG(12345);
       const folds = kFoldIndices(10, 5, rng);
       expect(folds.length).toBe(5);
@@ -68,7 +74,7 @@ describe("Resample", () => {
       expect(total).toBe(10);
     });
 
-    it("should be deterministic with same seed", () => {
+    it('should be deterministic with same seed', () => {
       const rng1 = makeRNG(12345);
       const rng2 = makeRNG(12345);
       const folds1 = kFoldIndices(10, 5, rng1);
